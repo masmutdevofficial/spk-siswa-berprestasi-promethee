@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sekolah;
 use Illuminate\Http\Request;
 use App\Models\UserGuru;
 
@@ -9,8 +10,10 @@ class UserGuruController extends Controller
 {
     public function index()
     {
-        $data = UserGuru::all();
-        return view('data-guru', compact('data'));
+        $data = UserGuru::with('sekolah')->get();
+        $sekolah = Sekolah::all();
+
+        return view('data-guru', compact('data', 'sekolah'));
     }
 
     public function store(Request $request)

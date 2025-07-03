@@ -11,7 +11,7 @@ class AdminYayasan extends Authenticatable
 
     protected $table = 'admin_yayasan';
     protected $fillable = ['username', 'email', 'password'];
-
+    protected $primaryKey = 'admin_yayasan_id';
     public function yayasans()
     {
         return $this->hasMany(Yayasan::class);

@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AdminSekolah;
+use App\Models\Sekolah;
 
 class AdminSekolahController extends Controller
 {
+
     public function index()
     {
-        $data = AdminSekolah::all();
-        return view('data-admin-sekolah', compact('data'));
+        $data = AdminSekolah::with('sekolah')->get();
+        $sekolah = Sekolah::all();
+
+        return view('data-admin-sekolah', compact('data', 'sekolah'));
     }
 
     public function store(Request $request)

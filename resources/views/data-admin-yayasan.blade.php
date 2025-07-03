@@ -9,8 +9,6 @@
 <link rel="stylesheet" href="{{ asset('assets/plugins/tabler-icons/tabler.min.css') }}">
 @endsection
 
-
-
 @section('customJs')
 <!-- DataTables & Plugins -->
 <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
@@ -31,9 +29,9 @@
 <div class="card card-outline card-primary">
     <div class="card-header">
         <div class="d-flex justify-content-between align-items-center">
-            <h3 class="card-title">Data Yayasan</h3>
+            <h3 class="card-title">Data Admin Yayasan</h3>
             <button class="btn btn-primary" data-toggle="modal" data-target="#modalTambah">
-                <i class="fa fa-plus mr-2"></i>Tambah Yayasan
+                <i class="fa fa-plus mr-2"></i>Tambah Admin
             </button>
         </div>
     </div>
@@ -43,8 +41,8 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Nama Yayasan</th>
-                    <th>Alamat</th>
+                    <th>Username</th>
+                    <th>Email</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -52,14 +50,14 @@
                 @foreach ($data as $index => $item)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $item->nama_yayasan }}</td>
-                    <td>{{ $item->alamat }}</td>
+                    <td>{{ $item->username }}</td>
+                    <td>{{ $item->email }}</td>
                     <td>
                         <div class="d-flex justify-content-center">
-                            <button class="btn btn-sm btn-warning mr-2" data-toggle="modal" data-target="#modalEdit{{ $item->yayasan_id }}">
+                            <button class="btn btn-sm btn-warning mr-2" data-toggle="modal" data-target="#modalEdit{{ $item->admin_yayasan_id }}">
                                 <i class="fa fa-edit mr-1"></i>Edit
                             </button>
-                            <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modalHapus{{ $item->yayasan_id }}">
+                            <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modalHapus{{ $item->admin_yayasan_id }}">
                                 <i class="fa fa-trash mr-1"></i>Hapus
                             </button>
                         </div>
@@ -67,26 +65,28 @@
                 </tr>
 
                 <!-- Modal Edit -->
-                <div class="modal fade" id="modalEdit{{ $item->yayasan_id }}" tabindex="-1">
+                <div class="modal fade" id="modalEdit{{ $item->admin_yayasan_id }}" tabindex="-1">
                     <div class="modal-dialog">
-                        <form action="{{ url('yayasan/update/' . $item->yayasan_id) }}" method="POST">
+                        <form action="{{ url('admin-yayasan/update/' . $item->admin_yayasan_id) }}" method="POST">
                             @csrf
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Edit Yayasan</h5>
+                                    <h5 class="modal-title">Edit Admin Yayasan</h5>
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="mb-3">
-                                        <label>Nama Yayasan</label>
-                                        <input type="text" name="nama_yayasan" value="{{ $item->nama_yayasan }}" class="form-control" required>
+                                        <label>Username</label>
+                                        <input type="text" name="username" value="{{ $item->username }}" class="form-control" required>
                                     </div>
                                     <div class="mb-3">
-                                        <label>Alamat</label>
-                                        <input type="text" name="alamat" value="{{ $item->alamat }}" class="form-control" required>
+                                        <label>Email</label>
+                                        <input type="email" name="email" value="{{ $item->email }}" class="form-control" required>
                                     </div>
-                                    <!-- admin_yayasan_id tidak ditampilkan karena dari auth -->
-                                    <input type="hidden" name="admin_yayasan_id" value="{{ auth()->id() }}">
+                                    <div class="mb-3">
+                                        <label>Password (biarkan kosong jika tidak ingin ubah)</label>
+                                        <input type="password" name="password" class="form-control">
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-warning">Update</button>
@@ -98,9 +98,9 @@
                 </div>
 
                 <!-- Modal Hapus -->
-                <div class="modal fade" id="modalHapus{{ $item->yayasan_id }}" tabindex="-1">
+                <div class="modal fade" id="modalHapus{{ $item->admin_yayasan_id }}" tabindex="-1">
                     <div class="modal-dialog">
-                        <form action="{{ url('yayasan/delete/' . $item->yayasan_id) }}" method="GET">
+                        <form action="{{ url('admin-yayasan/delete/' . $item->admin_yayasan_id) }}" method="GET">
                             @csrf
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -108,7 +108,7 @@
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 </div>
                                 <div class="modal-body">
-                                    Yakin ingin menghapus yayasan <strong>{{ $item->nama_yayasan }}</strong>?
+                                    Yakin ingin menghapus admin <strong>{{ $item->username }}</strong>?
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-danger">Hapus</button>
@@ -118,7 +118,6 @@
                         </form>
                     </div>
                 </div>
-
                 @endforeach
             </tbody>
         </table>
@@ -128,23 +127,26 @@
 <!-- Modal Tambah -->
 <div class="modal fade" id="modalTambah" tabindex="-1">
     <div class="modal-dialog">
-        <form action="{{ url('yayasan/store') }}" method="POST">
+        <form action="{{ url('admin-yayasan/store') }}" method="POST">
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Yayasan</h5>
+                    <h5 class="modal-title">Tambah Admin Yayasan</h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label>Nama Yayasan</label>
-                        <input type="text" name="nama_yayasan" class="form-control" required>
+                        <label>Username</label>
+                        <input type="text" name="username" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label>Alamat</label>
-                        <input type="text" name="alamat" class="form-control" required>
+                        <label>Email</label>
+                        <input type="email" name="email" class="form-control" required>
                     </div>
-                    <input type="hidden" name="admin_yayasan_id" value="{{ auth()->id() }}">
+                    <div class="mb-3">
+                        <label>Password</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Simpan</button>
@@ -155,7 +157,6 @@
     </div>
 </div>
 @endsection
-
 
 @section('bodyJs')
 <script>

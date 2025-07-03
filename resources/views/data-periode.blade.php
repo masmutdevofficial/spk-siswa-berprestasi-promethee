@@ -27,6 +27,121 @@
 <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 @endsection
 
+@section('content')
+<div class="card card-outline card-primary">
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <h3 class="card-title">Data Periode</h3>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#modalTambah">
+                <i class="fa fa-plus mr-2"></i>Tambah Periode
+            </button>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <table id="basicTable" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Tahun Ajaran</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($data as $index => $item)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $item->tahun_ajaran }}</td>
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-sm btn-warning mr-2" data-toggle="modal" data-target="#modalEdit{{ $item->periode_id }}">
+                                <i class="fa fa-edit mr-1"></i>Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modalHapus{{ $item->periode_id }}">
+                                <i class="fa fa-trash mr-1"></i>Hapus
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Modal Edit -->
+                <div class="modal fade" id="modalEdit{{ $item->periode_id }}" tabindex="-1">
+                    <div class="modal-dialog">
+                        <form action="{{ url('periode/update/' . $item->periode_id) }}" method="POST">
+                            @csrf
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Edit Periode</h5>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label>Tahun Ajaran</label>
+                                        <input type="text" name="tahun_ajaran" value="{{ $item->tahun_ajaran }}" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-warning">Update</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Modal Hapus -->
+                <div class="modal fade" id="modalHapus{{ $item->periode_id }}" tabindex="-1">
+                    <div class="modal-dialog">
+                        <form action="{{ url('periode/delete/' . $item->periode_id) }}" method="GET">
+                            @csrf
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Konfirmasi Hapus</h5>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    Yakin ingin menghapus periode <strong>{{ $item->tahun_ajaran }}</strong>?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal Tambah -->
+<div class="modal fade" id="modalTambah" tabindex="-1">
+    <div class="modal-dialog">
+        <form action="{{ url('periode/store') }}" method="POST">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Periode</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>Tahun Ajaran</label>
+                        <input type="text" name="tahun_ajaran" class="form-control" required placeholder="Contoh: 2024/2025">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection
+
 @section('bodyJs')
 <script>
   $(function () {

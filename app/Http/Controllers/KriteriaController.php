@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Kriteria;
+use App\Models\Sekolah;
 
 class KriteriaController extends Controller
 {
     public function index()
     {
-        $data = Kriteria::all();
-        return view('kriteria.index', compact('data'));
+        $data = Kriteria::with('sekolah')->get();
+        $sekolah = Sekolah::all();
+
+        return view('data-kriteria', compact('data', 'sekolah'));
     }
 
     public function store(Request $request)

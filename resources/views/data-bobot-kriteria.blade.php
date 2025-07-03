@@ -9,8 +9,6 @@
 <link rel="stylesheet" href="{{ asset('assets/plugins/tabler-icons/tabler.min.css') }}">
 @endsection
 
-
-
 @section('customJs')
 <!-- DataTables & Plugins -->
 <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
@@ -34,7 +32,8 @@
         <div class="d-flex justify-content-between align-items-center">
             <h3 class="card-title">Data Bobot Kriteria</h3>
             <button class="btn btn-primary" data-toggle="modal" data-target="#modalTambah">
-                <i class="fa fa-plus mr-2"></i>Tambah Bobot</button>
+                <i class="fa fa-plus mr-2"></i>Tambah Bobot
+            </button>
         </div>
     </div>
 
@@ -112,7 +111,7 @@
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 </div>
                                 <div class="modal-body">
-                                    Yakin ingin menghapus bobot untuk <strong>{{ $item->kriteria->nama_kriteria ?? '' }}</strong>?
+                                    Yakin ingin menghapus bobot untuk kriteria <strong>{{ $item->kriteria->nama_kriteria ?? '-' }}</strong>?
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-danger">Hapus</button>

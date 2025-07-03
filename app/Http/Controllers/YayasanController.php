@@ -10,12 +10,10 @@ class YayasanController extends Controller
 {
     public function index()
     {
-        $data = Yayasan::with('admin_yayasan')->get();
+        $data = Yayasan::with('adminyayasan')->get();
         $admin = AdminYayasan::all();
-        return view('data-yayasan', [
-            'data' => $data,
-            'admin' => $admin
-        ]);
+
+        return view('data-yayasan', compact('data', 'admin'));
     }
 
     public function store(Request $request)

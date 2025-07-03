@@ -4,15 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Kelas;
+use App\Models\Sekolah;
 
 class KelasController extends Controller
 {
     public function index()
     {
-        $data = Kelas::all();
-        return view('kelas.index', compact('data'));
-    }
+        $data = Kelas::with('sekolah')->get();
+        $sekolah = Sekolah::all();
 
+        return view('data-kelas', compact('data', 'sekolah'));
+    }
     public function store(Request $request)
     {
         $request->validate([

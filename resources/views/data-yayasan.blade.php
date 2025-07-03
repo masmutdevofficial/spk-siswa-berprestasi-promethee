@@ -9,8 +9,6 @@
 <link rel="stylesheet" href="{{ asset('assets/plugins/tabler-icons/tabler.min.css') }}">
 @endsection
 
-
-
 @section('customJs')
 <!-- DataTables & Plugins -->
 <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
@@ -55,7 +53,7 @@
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $item->nama_yayasan }}</td>
                     <td>{{ $item->alamat }}</td>
-                    <td>{{ $item->admin_yayasan->username ?? '-' }}</td>
+                    <td>{{ $item->adminyayasan->username ?? '-' }}</td>
                     <td>
                         <div class="d-flex justify-content-center">
                             <button class="btn btn-sm btn-warning mr-2" data-toggle="modal" data-target="#modalEdit{{ $item->yayasan_id }}">
@@ -128,7 +126,6 @@
                         </form>
                     </div>
                 </div>
-
                 @endforeach
             </tbody>
         </table>
@@ -172,7 +169,6 @@
     </div>
 </div>
 @endsection
-
 
 @section('bodyJs')
 <script>

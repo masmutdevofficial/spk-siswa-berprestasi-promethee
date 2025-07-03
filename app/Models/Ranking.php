@@ -10,20 +10,21 @@ class Ranking extends Model
     use HasFactory;
 
     protected $table = 'ranking';
+    protected $primaryKey = 'ranking_id';
     protected $fillable = ['siswa_id', 'kelas_id', 'periode_id', 'net_flow', 'ranking'];
 
     public function siswa()
     {
-        return $this->belongsTo(Siswa::class);
+        return $this->belongsTo(Siswa::class, 'siswa_id', 'siswa_id');
     }
 
     public function kelas()
     {
-        return $this->belongsTo(Kelas::class);
+        return $this->belongsTo(Kelas::class, 'kelas_id', 'kelas_id');
     }
 
     public function periode()
     {
-        return $this->belongsTo(Periode::class);
+        return $this->belongsTo(Periode::class, 'periode_id', 'periode_id');
     }
 }

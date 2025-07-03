@@ -10,15 +10,16 @@ class Periode extends Model
     use HasFactory;
 
     protected $table = 'periode';
+    protected $primaryKey = 'periode_id';
     protected $fillable = ['tahun_ajaran'];
 
     public function penilaians()
     {
-        return $this->hasMany(Penilaian::class);
+        return $this->hasMany(Penilaian::class, 'periode_id', 'periode_id');
     }
 
     public function rankings()
     {
-        return $this->hasMany(Ranking::class);
+        return $this->hasMany(Ranking::class, 'periode_id', 'periode_id');
     }
 }

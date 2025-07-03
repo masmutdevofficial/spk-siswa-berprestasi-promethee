@@ -4,13 +4,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Penilaian;
+use App\Models\Siswa;
+use App\Models\Kelas;
+use App\Models\Kriteria;
+use App\Models\Periode;
 
 class PenilaianController extends Controller
 {
     public function index()
     {
-        $data = Penilaian::all();
-        return view('penilaian.index', compact('data'));
+        $data = Penilaian::with(['siswa', 'kelas', 'kriteria', 'periode'])->get();
+        $siswa = Siswa::all();
+        $kelas = Kelas::all();
+        $kriteria = Kriteria::all();
+        $periode = Periode::all();
+
+        return view('data-penilaian', compact('data', 'siswa', 'kelas', 'kriteria', 'periode'));
     }
 
     public function store(Request $request)

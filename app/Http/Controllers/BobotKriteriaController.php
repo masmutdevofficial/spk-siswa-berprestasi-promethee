@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\BobotKriteria;
+use App\Models\Kriteria;
 
 class BobotKriteriaController extends Controller
 {
     public function index()
     {
-        $data = BobotKriteria::all();
-        return view('bobotkriteria.index', compact('data'));
+        $data = BobotKriteria::with('kriteria')->get();
+        $kriteria = Kriteria::all();
+
+        return view('data-bobot-kriteria', compact('data', 'kriteria'));
     }
 
     public function store(Request $request)

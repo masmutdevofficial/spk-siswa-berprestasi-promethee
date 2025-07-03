@@ -14,6 +14,6 @@ class UserGuru extends Authenticatable
 
     public function sekolah()
     {
-        return $this->belongsTo(Sekolah::class);
+        return $this->belongsTo(Sekolah::class, 'sekolah_id', 'sekolah_id');
     }
 }

@@ -42,6 +42,7 @@
                 <tr>
                     <th>No</th>
                     <th>Nama Kelas</th>
+                    <th>Sekolah</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -50,6 +51,7 @@
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $item->nama_kelas }}</td>
+                    <td>{{ $item->sekolah->nama_sekolah ?? '-' }}</td>
                     <td>
                         <div class="d-flex justify-content-center">
                             <button class="btn btn-sm btn-warning mr-2" data-toggle="modal" data-target="#modalEdit{{ $item->kelas_id }}">
@@ -77,7 +79,16 @@
                                         <label>Nama Kelas</label>
                                         <input type="text" name="nama_kelas" value="{{ $item->nama_kelas }}" class="form-control" required>
                                     </div>
-                                    <input type="hidden" name="sekolah_id" value="{{ auth()->user()->sekolah_id }}">
+                                    <div class="mb-3">
+                                        <label>Sekolah</label>
+                                        <select name="sekolah_id" class="form-control" required>
+                                            @foreach($sekolah as $s)
+                                            <option value="{{ $s->sekolah_id }}" {{ $item->sekolah_id == $s->sekolah_id ? 'selected' : '' }}>
+                                                {{ $s->nama_sekolah }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-warning">Update</button>
@@ -109,7 +120,6 @@
                         </form>
                     </div>
                 </div>
-
                 @endforeach
             </tbody>
         </table>
@@ -131,7 +141,14 @@
                         <label>Nama Kelas</label>
                         <input type="text" name="nama_kelas" class="form-control" required>
                     </div>
-                    <input type="hidden" name="sekolah_id" value="{{ auth()->user()->sekolah_id }}">
+                    <div class="mb-3">
+                        <label>Sekolah</label>
+                        <select name="sekolah_id" class="form-control" required>
+                            @foreach($sekolah as $s)
+                            <option value="{{ $s->sekolah_id }}">{{ $s->nama_sekolah }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Simpan</button>

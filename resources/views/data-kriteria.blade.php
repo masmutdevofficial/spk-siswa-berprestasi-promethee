@@ -9,8 +9,6 @@
 <link rel="stylesheet" href="{{ asset('assets/plugins/tabler-icons/tabler.min.css') }}">
 @endsection
 
-
-
 @section('customJs')
 <!-- DataTables & Plugins -->
 <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
@@ -137,7 +135,6 @@
                         </form>
                     </div>
                 </div>
-
                 @endforeach
             </tbody>
         </table>
@@ -188,7 +185,6 @@
     </div>
 </div>
 @endsection
-
 
 @section('bodyJs')
 <script>

@@ -4,15 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ranking;
+use App\Models\Siswa;
+use App\Models\Kelas;
+use App\Models\Periode;
 
 class RankingController extends Controller
 {
     public function index()
     {
-        $data = Ranking::all();
-        return view('ranking.index', compact('data'));
-    }
+        $data = Ranking::with(['siswa', 'kelas', 'periode'])->get();
+        $siswa = Siswa::all();
+        $kelas = Kelas::all();
+        $periode = Periode::all();
 
+        return view('data-ranking', compact('data', 'siswa', 'kelas', 'periode'));
+    }
     public function store(Request $request)
     {
         $request->validate([
