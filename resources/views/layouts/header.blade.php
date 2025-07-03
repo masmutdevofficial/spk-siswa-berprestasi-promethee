@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $title ?? 'SISTEM PAKAR DETEKSI DINI STATUS STUNTING BALITA MENGGUNAKAN METODE NAÏVE BAYES' }}</title>
+    <title>{{ $title ?? 'SISTEM PENDUKUNG KEPUTUSAN UNTUK MENENTUKAN SISWA/I BERPRESTASI DENGAN MENGGUNAKAN METODE PROMETHEE DI YAYASAN PENDIDIKAN ADVENT PAPUA' }}</title>
 
     <!-- REQUIRED CSS -->
     <!-- Google Font: Source Sans Pro -->
