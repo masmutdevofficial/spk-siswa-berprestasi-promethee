@@ -10,8 +10,9 @@ class AdminYayasan extends Authenticatable
     use HasFactory;
 
     protected $table = 'admin_yayasan';
-    protected $fillable = ['username', 'email', 'password'];
     protected $primaryKey = 'admin_yayasan_id';
+    protected $fillable = ['username', 'email', 'password'];
+
     public function yayasans()
     {
         return $this->hasMany(Yayasan::class);
