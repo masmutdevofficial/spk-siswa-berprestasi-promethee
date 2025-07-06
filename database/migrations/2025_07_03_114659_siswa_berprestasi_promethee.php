@@ -92,7 +92,7 @@ return new class extends Migration {
         Schema::create('bobot_kriteria', function (Blueprint $table) {
             $table->id('bobot_id');
             $table->unsignedBigInteger('kriteria_id');
-            $table->decimal('bobot', 8, 2);
+            $table->decimal('bobot', 8, 5);
             $table->timestamps();
 
             $table->foreign('kriteria_id')->references('kriteria_id')->on('kriteria')->onDelete('cascade');
