@@ -70,6 +70,10 @@
                 Email: <code>guru2@gmail.com</code><br>
                 Password: <code>guru2</code>
             </li>
+            <li><strong>Guru 3</strong><br>
+                Email: <code>guru3@gmail.com</code><br>
+                Password: <code>guru3</code>
+            </li>
         </ul>
     </div>
   </div>

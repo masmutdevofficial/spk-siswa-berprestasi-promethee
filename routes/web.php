@@ -12,8 +12,9 @@ use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\BobotKriteriaController;
 use App\Http\Controllers\PeriodeController;
+use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\PenilaianController;
-use App\Http\Controllers\RankingController;
+use App\Http\Controllers\RekomendasiController;
 
 // Login selector
 Route::get('/', [LoginController::class, 'showLoginSelector'])->name('login')->middleware('sudahLogin');
@@ -81,6 +82,11 @@ Route::middleware('cekLogin:admin_sekolah')->group(function () {
     Route::post('/periode/store', [PeriodeController::class, 'store']);
     Route::post('/periode/update/{id}', [PeriodeController::class, 'update']);
     Route::get('/periode/delete/{id}', [PeriodeController::class, 'destroy']);
+
+    Route::get('/semester', [SemesterController::class, 'index']);
+    Route::post('/semester/store', [SemesterController::class, 'store']);
+    Route::post('/semester/update/{id}', [SemesterController::class, 'update']);
+    Route::get('/semester/delete/{id}', [SemesterController::class, 'destroy']);
 });
 
 // GURU
@@ -95,9 +101,9 @@ Route::middleware('cekLogin:user_guru')->group(function () {
     Route::post('/penilaian/update/{id}', [PenilaianController::class, 'update']);
     Route::get('/penilaian/delete/{id}', [PenilaianController::class, 'destroy']);
 
-    Route::get('/ranking', [RankingController::class, 'index']);
-    Route::post('/ranking/store', [RankingController::class, 'store']);
-    Route::post('/ranking/update/{id}', [RankingController::class, 'update']);
-    Route::get('/ranking/delete/{id}', [RankingController::class, 'destroy']);
+    Route::get('/ranking', [RekomendasiController::class, 'index']);
+    Route::post('/ranking/store', [RekomendasiController::class, 'store']);
+    Route::post('/ranking/update/{id}', [RekomendasiController::class, 'update']);
+    Route::get('/ranking/delete/{id}', [RekomendasiController::class, 'destroy']);
 });
 

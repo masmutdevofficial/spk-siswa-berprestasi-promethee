@@ -18,8 +18,8 @@ class Periode extends Model
         return $this->hasMany(Penilaian::class, 'periode_id', 'periode_id');
     }
 
-    public function rankings()
+    public function rekomendasis()
     {
-        return $this->hasMany(Ranking::class, 'periode_id', 'periode_id');
+        return $this->hasMany(Rekomendasi::class, 'periode_id', 'periode_id');
     }
 }

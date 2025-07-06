@@ -63,7 +63,7 @@ class DefaultSeeder extends Seeder
             ],
             [
                 'sekolah_id' => 3,
-                'yayasan_id' => 2,
+                'yayasan_id' => 1,
                 'nama_sekolah' => 'SMA Advent Doyo Baru',
                 'alamat' => 'Jl. Raya Doyo Baru, Doyo Baru, Distrik Waibu, Kabupaten Jayapura, Papua 99352',
                 'created_at' => now(),
@@ -138,7 +138,7 @@ class DefaultSeeder extends Seeder
             ],
             [
                 'kelas_id' => 2,
-                'sekolah_id' => 1,
+                'sekolah_id' => 2,
                 'nama_kelas' => 'Kelas 9D',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -152,7 +152,7 @@ class DefaultSeeder extends Seeder
             ],
         ]);
 
-        //Siswa SD Kelas 6A
+        // Siswa SD Kelas 6A
         DB::table('siswa')->insert([
             [
                 'siswa_id' => 1,
@@ -480,7 +480,7 @@ class DefaultSeeder extends Seeder
             ],
         ]);
 
-        //Siswa SMP Kelas 9D
+        // Siswa SMP Kelas 9D
         DB::table('siswa')->insert([
             [
                 'siswa_id' => 37,
@@ -754,7 +754,7 @@ class DefaultSeeder extends Seeder
             ],
         ]);
 
-        //Siswa SMA Kelas 12 IPS
+        // Siswa SMA Kelas 12 IPS
         DB::table('siswa')->insert([
             [
                 'siswa_id' => 67,
@@ -1028,7 +1028,7 @@ class DefaultSeeder extends Seeder
             ],
         ]);
 
-        //Kriteria SD
+        // Kriteria SD
         DB::table('kriteria')->insert([
             ['sekolah_id' => 1, 'kode_kriteria' => 'A1',  'nama_kriteria' => 'Nilai Rata-rata Semester 1',  'jenis' => 'benefit', 'created_at' => now(), 'updated_at' => now()],
             ['sekolah_id' => 1, 'kode_kriteria' => 'A2',  'nama_kriteria' => 'Nilai Ekstrakulikuler Semester 1',  'jenis' => 'benefit', 'created_at' => now(), 'updated_at' => now()],
@@ -1069,7 +1069,7 @@ class DefaultSeeder extends Seeder
             ['sekolah_id' => 1, 'kode_kriteria' => 'A37', 'nama_kriteria' => 'Prestasi', 'jenis' => 'benefit', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        //Kriteria SMP
+        // Kriteria SMP
         DB::table('kriteria')->insert([
             ['sekolah_id' => 2, 'kode_kriteria' => 'A1',  'nama_kriteria' => 'Nilai Rata-rata Semester 1',  'jenis' => 'benefit', 'created_at' => now(), 'updated_at' => now()],
             ['sekolah_id' => 2, 'kode_kriteria' => 'A2',  'nama_kriteria' => 'Nilai Ekstrakulikuler Semester 1',  'jenis' => 'benefit', 'created_at' => now(), 'updated_at' => now()],
@@ -1092,7 +1092,7 @@ class DefaultSeeder extends Seeder
             ['sekolah_id' => 2, 'kode_kriteria' => 'A19', 'nama_kriteria' => 'Prestasi', 'jenis' => 'benefit', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        //Kriteria SMA
+        // Kriteria SMA
         DB::table('kriteria')->insert([
             ['sekolah_id' => 3, 'kode_kriteria' => 'A1',  'nama_kriteria' => 'Nilai Rata-rata Semester 1',  'jenis' => 'benefit', 'created_at' => now(), 'updated_at' => now()],
             ['sekolah_id' => 3, 'kode_kriteria' => 'A2',  'nama_kriteria' => 'Nilai Ekstrakulikuler Semester 1',  'jenis' => 'benefit', 'created_at' => now(), 'updated_at' => now()],
@@ -1115,7 +1115,7 @@ class DefaultSeeder extends Seeder
             ['sekolah_id' => 3, 'kode_kriteria' => 'A19', 'nama_kriteria' => 'Prestasi', 'jenis' => 'benefit', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        //Bobot SD
+        // Bobot SD
         DB::table('bobot_kriteria')->insert([
             ['kriteria_id' => 1,  'bobot' => 0.0400, 'created_at' => now(), 'updated_at' => now()],
             ['kriteria_id' => 2,  'bobot' => 0.0167, 'created_at' => now(), 'updated_at' => now()],
@@ -1156,7 +1156,7 @@ class DefaultSeeder extends Seeder
             ['kriteria_id' => 37, 'bobot' => 0.0196, 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        //Bobot SMP
+        // Bobot SMP
         DB::table('bobot_kriteria')->insert([
             ['kriteria_id' => 38, 'bobot' => 0.0600, 'created_at' => now(), 'updated_at' => now()],
             ['kriteria_id' => 39, 'bobot' => 0.0492, 'created_at' => now(), 'updated_at' => now()],
@@ -1179,7 +1179,7 @@ class DefaultSeeder extends Seeder
             ['kriteria_id' => 56, 'bobot' => 0.0490, 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        //Bobot SMA
+        // Bobot SMA
         DB::table('bobot_kriteria')->insert([
             ['kriteria_id' => 57, 'bobot' => 0.0600, 'created_at' => now(), 'updated_at' => now()],
             ['kriteria_id' => 58, 'bobot' => 0.0492, 'created_at' => now(), 'updated_at' => now()],
@@ -1212,38 +1212,22 @@ class DefaultSeeder extends Seeder
             ],
         ]);
 
-        // Penilaian
-        DB::table('penilaian')->insert([
-            [
-                'penilaian_id' => 1,
-                'siswa_id' => 1,
-                'kelas_id' => 1,
-                'kriteria_id' => 1,
-                'periode_id' => 1,
-                'nilai_kriteria' => 85.50,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'penilaian_id' => 2,
-                'siswa_id' => 2,
-                'kelas_id' => 2,
-                'kriteria_id' => 1,
-                'periode_id' => 1,
-                'nilai_kriteria' => 90.25,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'penilaian_id' => 3,
-                'siswa_id' => 3,
-                'kelas_id' => 3,
-                'kriteria_id' => 3,
-                'periode_id' => 2,
-                'nilai_kriteria' => 88.00,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+        // Semester
+        DB::table('semester')->insert([
+            ['nama' => 'Semester 1',  'created_at' => now(), 'updated_at' => now()],
+            ['nama' => 'Semester 2',  'created_at' => now(), 'updated_at' => now()],
+            ['nama' => 'Semester 3',  'created_at' => now(), 'updated_at' => now()],
+            ['nama' => 'Semester 4',  'created_at' => now(), 'updated_at' => now()],
+            ['nama' => 'Semester 5',  'created_at' => now(), 'updated_at' => now()],
+            ['nama' => 'Semester 6',  'created_at' => now(), 'updated_at' => now()],
+            ['nama' => 'Semester 7',  'created_at' => now(), 'updated_at' => now()],
+            ['nama' => 'Semester 8',  'created_at' => now(), 'updated_at' => now()],
+            ['nama' => 'Semester 9',  'created_at' => now(), 'updated_at' => now()],
+            ['nama' => 'Semester 10', 'created_at' => now(), 'updated_at' => now()],
+            ['nama' => 'Semester 11', 'created_at' => now(), 'updated_at' => now()],
+            ['nama' => 'Semester 12', 'created_at' => now(), 'updated_at' => now()],
         ]);
+
+
     }
 }

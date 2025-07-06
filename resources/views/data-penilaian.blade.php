@@ -47,6 +47,7 @@
                     <th>Kelas</th>
                     <th>Kriteria</th>
                     <th>Periode</th>
+                    <th>Semester</th>
                     <th>Nilai</th>
                     <th>Aksi</th>
                 </tr>
@@ -59,6 +60,7 @@
                     <td>{{ $item->kelas->nama_kelas ?? '-' }}</td>
                     <td>{{ $item->kriteria->nama_kriteria ?? '-' }}</td>
                     <td>{{ $item->periode->tahun_ajaran ?? '-' }}</td>
+                    <td>{{ $item->semester->nama ?? '-' }}</td>
                     <td>{{ $item->nilai_kriteria }}</td>
                     <td>
                         <div class="d-flex justify-content-center">
@@ -119,6 +121,16 @@
                                             @foreach($periode as $p)
                                             <option value="{{ $p->periode_id }}" {{ $item->periode_id == $p->periode_id ? 'selected' : '' }}>
                                                 {{ $p->tahun_ajaran }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Semester</label>
+                                        <select name="semester_id" class="form-control" required>
+                                            @foreach($semesterTersedia[$s->siswa_id] ?? [] as $sm)
+                                            <option value="{{ $sm->semester_id }}" {{ $item->semester_id == $sm->semester_id ? 'selected' : '' }}>
+                                                {{ $sm->nama }}
                                             </option>
                                             @endforeach
                                         </select>
@@ -204,6 +216,14 @@
                         <select name="periode_id" class="form-control" required>
                             @foreach($periode as $p)
                             <option value="{{ $p->periode_id }}">{{ $p->tahun_ajaran }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>Semester</label>
+                        <select name="semester_id" class="form-control" required>
+                            @foreach($semesterTersedia[$s->siswa_id] ?? [] as $sm)
+                            <option value="{{ $sm->semester_id }}">{{ $sm->nama }}</option>
                             @endforeach
                         </select>
                     </div>

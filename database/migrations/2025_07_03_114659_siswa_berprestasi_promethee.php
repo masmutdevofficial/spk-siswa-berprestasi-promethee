@@ -104,12 +104,19 @@ return new class extends Migration {
             $table->timestamps();
         });
 
+        Schema::create('semester', function (Blueprint $table) {
+            $table->id('semester_id');
+            $table->string('nama', 50);
+            $table->timestamps();
+        });
+
         Schema::create('penilaian', function (Blueprint $table) {
             $table->id('penilaian_id');
             $table->unsignedBigInteger('siswa_id');
             $table->unsignedBigInteger('kelas_id');
             $table->unsignedBigInteger('kriteria_id');
             $table->unsignedBigInteger('periode_id');
+            $table->unsignedBigInteger('semester_id');
             $table->decimal('nilai_kriteria', 5, 2);
             $table->timestamps();
 
@@ -117,10 +124,11 @@ return new class extends Migration {
             $table->foreign('kelas_id')->references('kelas_id')->on('kelas')->onDelete('cascade');
             $table->foreign('kriteria_id')->references('kriteria_id')->on('kriteria')->onDelete('cascade');
             $table->foreign('periode_id')->references('periode_id')->on('periode')->onDelete('cascade');
+            $table->foreign('semester_id')->references('semester_id')->on('semester')->onDelete('cascade');
         });
 
-        Schema::create('ranking', function (Blueprint $table) {
-            $table->id('ranking_id');
+        Schema::create('rekomendasi', function (Blueprint $table) {
+            $table->id('rekomendasi_id');
             $table->unsignedBigInteger('siswa_id');
             $table->unsignedBigInteger('kelas_id');
             $table->unsignedBigInteger('periode_id');
@@ -136,8 +144,9 @@ return new class extends Migration {
 
     public function down(): void
     {
-        Schema::dropIfExists('ranking');
+        Schema::dropIfExists('rekomendasi');
         Schema::dropIfExists('penilaian');
+        Schema::dropIfExists('semester');
         Schema::dropIfExists('periode');
         Schema::dropIfExists('bobot_kriteria');
         Schema::dropIfExists('kriteria');

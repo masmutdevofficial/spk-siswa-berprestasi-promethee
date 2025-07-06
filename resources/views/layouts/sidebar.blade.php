@@ -80,6 +80,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ url('semester') }}" class="nav-link {{ request()->is('semester') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-calendar"></i>
+                            <p>Semester</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ url('periode') }}" class="nav-link {{ request()->is('periode') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-calendar-week"></i>
                             <p>Periode</p>

@@ -11,7 +11,7 @@ class Penilaian extends Model
 
     protected $table = 'penilaian';
     protected $primaryKey = 'penilaian_id';
-    protected $fillable = ['siswa_id', 'kelas_id', 'kriteria_id', 'periode_id', 'nilai_kriteria'];
+    protected $fillable = ['siswa_id', 'kelas_id', 'kriteria_id', 'semester_id', 'periode_id', 'nilai_kriteria'];
 
     public function siswa()
     {
@@ -31,5 +31,10 @@ class Penilaian extends Model
     public function periode()
     {
         return $this->belongsTo(Periode::class, 'periode_id', 'periode_id');
+    }
+
+    public function semester()
+    {
+        return $this->belongsTo(Semester::class, 'semester_id', 'semester_id');
     }
 }

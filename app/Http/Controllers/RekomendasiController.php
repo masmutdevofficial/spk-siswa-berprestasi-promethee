@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Ranking;
+use App\Models\Rekomendasi;
 use App\Models\Siswa;
 use App\Models\Kelas;
 use App\Models\Periode;
 use App\Models\UserGuru;
 
-class RankingController extends Controller
+class RekomendasiController extends Controller
 {
     public function index()
     {
         $sekolah_id = UserGuru::find(session('user_id'))->sekolah_id;
 
-        $data = Ranking::with(['siswa', 'kelas', 'periode'])
+        $data = Rekomendasi::with(['siswa', 'kelas', 'periode'])
             ->whereHas('kelas', function ($query) use ($sekolah_id) {
                 $query->where('sekolah_id', $sekolah_id);
             })->get();
@@ -40,7 +40,7 @@ class RankingController extends Controller
         'ranking' => 'required',
         ]);
 
-        $data = new Ranking();
+        $data = new Rekomendasi();
         $data->siswa_id = $request->siswa_id;
         $data->kelas_id = $request->kelas_id;
         $data->periode_id = $request->periode_id;
@@ -61,7 +61,7 @@ class RankingController extends Controller
         'ranking' => 'required',
         ]);
 
-        $data = Ranking::findOrFail($id);
+        $data = Rekomendasi::findOrFail($id);
         $data->siswa_id = $request->siswa_id;
         $data->kelas_id = $request->kelas_id;
         $data->periode_id = $request->periode_id;
@@ -74,7 +74,7 @@ class RankingController extends Controller
 
     public function destroy($id)
     {
-        $data = Ranking::findOrFail($id);
+        $data = Rekomendasi::findOrFail($id);
         $data->delete();
 
         return redirect()->back()->with('success', 'Ranking berhasil dihapus');

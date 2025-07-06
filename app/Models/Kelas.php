@@ -28,8 +28,8 @@ class Kelas extends Model
         return $this->hasMany(Penilaian::class, 'kelas_id', 'kelas_id');
     }
 
-    public function rankings()
+    public function rekomendasis()
     {
-        return $this->hasMany(Ranking::class, 'kelas_id', 'kelas_id');
+        return $this->hasMany(Rekomendasi::class, 'kelas_id', 'kelas_id');
     }
 }

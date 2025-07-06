@@ -57,7 +57,7 @@
                 <!-- Modal Edit -->
                 <div class="modal fade" id="modalEdit{{ $item->siswa_id }}" tabindex="-1">
                     <div class="modal-dialog">
-                        <form action="{{ url('siswa/' . $item->siswa_id) }}" method="POST">
+                        <form action="{{ url('siswa/update/' . $item->siswa_id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="modal-content">
@@ -104,9 +104,8 @@
                 <!-- Modal Hapus -->
                 <div class="modal fade" id="modalHapus{{ $item->siswa_id }}" tabindex="-1">
                     <div class="modal-dialog">
-                        <form action="{{ url('siswa/' . $item->siswa_id) }}" method="POST">
+                        <form action="{{ url('siswa/delete/' . $item->siswa_id) }}" method="GET">
                             @csrf
-                            @method('DELETE')
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">Konfirmasi Hapus</h5>
@@ -133,7 +132,7 @@
 <!-- Modal Tambah -->
 <div class="modal fade" id="modalTambah" tabindex="-1">
     <div class="modal-dialog">
-        <form action="{{ url('siswa') }}" method="POST">
+        <form action="{{ url('siswa/store') }}" method="POST">
             @csrf
             <div class="modal-content">
                 <div class="modal-header">

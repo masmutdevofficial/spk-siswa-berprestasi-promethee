@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ranking extends Model
+class Rekomendasi extends Model
 {
     use HasFactory;
 
-    protected $table = 'ranking';
-    protected $primaryKey = 'ranking_id';
+    protected $table = 'rekomendasi';
+    protected $primaryKey = 'rekomendasi_id';
     protected $fillable = ['siswa_id', 'kelas_id', 'periode_id', 'net_flow', 'ranking'];
 
     public function siswa()
