@@ -25,6 +25,7 @@
             <thead>
                 <tr>
                     <th>No</th>
+                    <th>Sekolah</th>
                     <th>Kelas</th>
                     <th>NIS</th>
                     <th>Nama Siswa</th>
@@ -36,6 +37,7 @@
                 @foreach ($data as $index => $item)
                 <tr>
                     <td>{{ $index + 1 }}</td>
+                    <td>{{ $item->kelas->sekolah->nama_sekolah ?? '-' }}</td>
                     <td>{{ $item->kelas->nama_kelas ?? '-' }}</td>
                     <td>{{ $item->nis }}</td>
                     <td>{{ $item->nama_siswa }}</td>

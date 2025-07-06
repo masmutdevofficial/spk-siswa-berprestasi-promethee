@@ -16,6 +16,7 @@ use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\RankingController;
 
 // Login selector
+Route::get('/', [LoginController::class, 'showLoginSelector'])->name('login')->middleware('sudahLogin');
 Route::get('/login', [LoginController::class, 'showLoginSelector'])->name('login')->middleware('sudahLogin');
 
 // Halaman login per role

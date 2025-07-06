@@ -8,15 +8,25 @@ use App\Models\Siswa;
 use App\Models\Kelas;
 use App\Models\Kriteria;
 use App\Models\Periode;
+use App\Models\UserGuru;
 
 class PenilaianController extends Controller
 {
     public function index()
     {
-        $data = Penilaian::with(['siswa', 'kelas', 'kriteria', 'periode'])->get();
-        $siswa = Siswa::all();
-        $kelas = Kelas::all();
-        $kriteria = Kriteria::all();
+        $sekolah_id = UserGuru::find(session('user_id'))->sekolah_id;
+
+        $data = Penilaian::with(['siswa', 'kelas', 'kriteria', 'periode'])
+            ->whereHas('kelas', function ($query) use ($sekolah_id) {
+                $query->where('sekolah_id', $sekolah_id);
+            })->get();
+
+        $siswa = Siswa::whereHas('kelas', function ($query) use ($sekolah_id) {
+            $query->where('sekolah_id', $sekolah_id);
+        })->get();
+
+        $kelas = Kelas::where('sekolah_id', $sekolah_id)->get();
+        $kriteria = Kriteria::where('sekolah_id', $sekolah_id)->get();
         $periode = Periode::all();
 
         return view('data-penilaian', compact('data', 'siswa', 'kelas', 'kriteria', 'periode'));

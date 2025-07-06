@@ -7,18 +7,29 @@ use App\Models\Ranking;
 use App\Models\Siswa;
 use App\Models\Kelas;
 use App\Models\Periode;
+use App\Models\UserGuru;
 
 class RankingController extends Controller
 {
     public function index()
     {
-        $data = Ranking::with(['siswa', 'kelas', 'periode'])->get();
-        $siswa = Siswa::all();
-        $kelas = Kelas::all();
+        $sekolah_id = UserGuru::find(session('user_id'))->sekolah_id;
+
+        $data = Ranking::with(['siswa', 'kelas', 'periode'])
+            ->whereHas('kelas', function ($query) use ($sekolah_id) {
+                $query->where('sekolah_id', $sekolah_id);
+            })->get();
+
+        $siswa = Siswa::whereHas('kelas', function ($query) use ($sekolah_id) {
+            $query->where('sekolah_id', $sekolah_id);
+        })->get();
+
+        $kelas = Kelas::where('sekolah_id', $sekolah_id)->get();
         $periode = Periode::all();
 
         return view('data-ranking', compact('data', 'siswa', 'kelas', 'periode'));
     }
+
     public function store(Request $request)
     {
         $request->validate([

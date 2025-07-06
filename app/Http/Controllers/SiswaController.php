@@ -5,13 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
+use App\Models\UserGuru;
 
 class SiswaController extends Controller
 {
     public function index()
     {
-        $data = Siswa::with('kelas')->get();
-        $kelas = Kelas::all();
+        $sekolah_id = UserGuru::find(session('user_id'))->sekolah_id;
+
+        $data = Siswa::with('kelas.sekolah')
+            ->whereHas('kelas', function ($query) use ($sekolah_id) {
+                $query->where('sekolah_id', $sekolah_id);
+            })
+            ->get();
+
+        $kelas = Kelas::where('sekolah_id', $sekolah_id)->get();
+
         return view('data-siswa', [
             'data' => $data,
             'kelas' => $kelas
