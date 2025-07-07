@@ -18,6 +18,11 @@ class NilaiPrestasi extends Model
         return $this->belongsTo(Siswa::class, 'siswa_id', 'siswa_id');
     }
 
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class, 'kelas_id', 'kelas_id');
+    }
+
     public function kriteria()
     {
         return $this->belongsTo(Kriteria::class, 'kriteria_id', 'kriteria_id');

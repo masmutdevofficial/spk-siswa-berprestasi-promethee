@@ -18,9 +18,9 @@ class Kriteria extends Model
         return $this->belongsTo(Sekolah::class, 'sekolah_id', 'sekolah_id');
     }
 
-    public function bobotKriterias()
+    public function bobot()
     {
-        return $this->hasMany(BobotKriteria::class, 'kriteria_id', 'kriteria_id');
+        return $this->hasOne(BobotKriteria::class, 'kriteria_id', 'kriteria_id');
     }
 
     public function penilaians()

@@ -15,6 +15,11 @@ use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\RekomendasiController;
+use App\Models\Kriteria;
+use App\Models\Siswa;
+use App\Models\Penilaian;
+use App\Models\NilaiPrestasi;
+use App\Services\PrometheeService;
 
 // Login selector
 Route::get('/', [LoginController::class, 'showLoginSelector'])->name('login')->middleware('sudahLogin');
@@ -105,5 +110,11 @@ Route::middleware('cekLogin:user_guru')->group(function () {
     Route::post('/ranking/store', [RekomendasiController::class, 'store']);
     Route::post('/ranking/update/{id}', [RekomendasiController::class, 'update']);
     Route::get('/ranking/delete/{id}', [RekomendasiController::class, 'destroy']);
+
 });
 
+Route::get('/promethee/{kelasId}', function ($kelasId) {
+    $periodeId = 1;
+    $detail = (new PrometheeService)->hitungDetailed($kelasId, $periodeId);
+    return view('algoritma', compact('kelasId', 'detail'));
+});
