@@ -127,6 +127,19 @@ return new class extends Migration {
             $table->foreign('semester_id')->references('semester_id')->on('semester')->onDelete('cascade');
         });
 
+        Schema::create('nilai_prestasi', function (Blueprint $table) {
+            $table->id('nilai_prestasi_id');
+            $table->unsignedBigInteger('siswa_id');
+            $table->unsignedBigInteger('kriteria_id');
+            $table->unsignedBigInteger('periode_id');
+            $table->decimal('nilai_kriteria', 5, 2);
+            $table->timestamps();
+
+            $table->foreign('siswa_id')->references('siswa_id')->on('siswa')->onDelete('cascade');
+            $table->foreign('kriteria_id')->references('kriteria_id')->on('kriteria')->onDelete('cascade');
+            $table->foreign('periode_id')->references('periode_id')->on('periode')->onDelete('cascade');
+        });
+
         Schema::create('rekomendasi', function (Blueprint $table) {
             $table->id('rekomendasi_id');
             $table->unsignedBigInteger('siswa_id');

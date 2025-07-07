@@ -23,8 +23,13 @@ class Siswa extends Model
         return $this->hasMany(Penilaian::class, 'siswa_id', 'siswa_id');
     }
 
+    public function nilaiprestasi()
+    {
+        return $this->hasMany(NilaiPrestasi::class, 'siswa_id', 'siswa_id');
+    }
+
     public function rankings()
     {
-        return $this->hasMany(Ranking::class, 'siswa_id', 'siswa_id');
+        return $this->hasMany(Rekomendasi::class, 'siswa_id', 'siswa_id');
     }
 }

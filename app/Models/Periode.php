@@ -18,6 +18,11 @@ class Periode extends Model
         return $this->hasMany(Penilaian::class, 'periode_id', 'periode_id');
     }
 
+    public function nilaiprestasi()
+    {
+        return $this->hasMany(NilaiPrestasi::class, 'periode_id', 'periode_id');
+    }
+
     public function rekomendasis()
     {
         return $this->hasMany(Rekomendasi::class, 'periode_id', 'periode_id');
