@@ -105,7 +105,7 @@ Menentukan **ranking siswa** berdasarkan perhitungan **Net Flow tertinggi** meng
 9. **Untuk memasukkan data penilaian lengkap dari file Excel:**
 
     ```bash
-    php artisan db:seed --class=DataPenilaianSeeder
+    php artisan db:seed --class=DataPenilaian
     ```
 
 10. **Jalankan server lokal:**
