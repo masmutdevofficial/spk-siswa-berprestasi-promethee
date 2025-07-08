@@ -2,69 +2,82 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Penilaian;
-use App\Models\Siswa;
 use App\Models\Kelas;
-use App\Models\Kriteria;
+use App\Models\Siswa;
 use App\Models\Periode;
+use App\Models\Kriteria;
 use App\Models\Semester;
 use App\Models\UserGuru;
+use App\Models\Penilaian;
+use Illuminate\Http\Request;
+use App\Models\NilaiPrestasi;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class PenilaianController extends Controller
 {
     public function index()
     {
-        $user = UserGuru::find(session('user_id'));
-        $sekolah_id = $user->sekolah_id;
+        // 1. Ambil sekolah_id dari guru yang sedang login
+        $sekolah_id = Auth::guard('user_guru')->user()->sekolah_id;
 
+        // 2. Ambil data siswa (dengan kelas)
+        $siswa = Siswa::select('siswa_id', 'kelas_id', 'nis', 'nama_siswa', 'jenis_kelamin')
+            ->whereHas('kelas', fn ($q) => $q->where('sekolah_id', $sekolah_id))
+            ->with(['kelas:kelas_id,sekolah_id,nama_kelas'])
+            ->get();
+
+        // 3. Ambil data kelas dari sekolah tersebut
+        $kelas = Kelas::select('kelas_id', 'nama_kelas')
+            ->where('sekolah_id', $sekolah_id)
+            ->get();
+
+        // 4. Ambil kriteria dari sekolah tersebut
+        $kriteria = Kriteria::select('kriteria_id', 'kode_kriteria', 'nama_kriteria')
+            ->where('sekolah_id', $sekolah_id)
+            ->get();
+
+        // 5. Ambil semua periode
+        $periode = Periode::select('periode_id', 'tahun_ajaran')->get();
+
+        // 6. Ambil semua semester
+        $semuaSemester = Semester::orderBy('semester_id')->get(['semester_id', 'nama']);
+
+        // 7. Ambil data penilaian (maksimal 1000 untuk jaga performa)
         $data = Penilaian::with(['siswa', 'kelas', 'kriteria', 'periode', 'semester'])
-            ->whereHas('kelas', function ($query) use ($sekolah_id) {
-                $query->where('sekolah_id', $sekolah_id);
-            })->get();
+            ->whereHas('kelas', fn ($q) => $q->where('sekolah_id', $sekolah_id))
+            ->orderByDesc('penilaian_id')
+            ->get();
 
-        $siswa = Siswa::whereHas('kelas', function ($query) use ($sekolah_id) {
-            $query->where('sekolah_id', $sekolah_id);
-        })->with('kelas')->get();
+        // 8. Ambil data nilai prestasi siswa berdasarkan sekolah
+        $nilaiPrestasi = NilaiPrestasi::with(['siswa.kelas', 'kriteria', 'periode'])
+            ->whereHas('siswa.kelas', fn ($q) => $q->where('sekolah_id', $sekolah_id))
+            ->get();
 
-        $kelas = Kelas::where('sekolah_id', $sekolah_id)->get();
-        $kriteria = Kriteria::where('sekolah_id', $sekolah_id)->get();
-        $periode = Periode::all();
+        $kriteriaPrestasi = Kriteria::where('sekolah_id', $sekolah_id)
+            ->where('nama_kriteria', 'Prestasi')
+            ->select('kriteria_id', 'nama_kriteria')
+            ->get();
 
-        $semuaSemester = Semester::orderBy('semester_id')->get();
+        $nilaiPrestasiTersimpan = NilaiPrestasi::select('siswa_id', 'kriteria_id', 'periode_id', 'nilai_kriteria')
+            ->whereIn('siswa_id', $siswa->pluck('siswa_id'))
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [ $item->siswa_id . '-' . $item->kriteria_id . '-' . $item->periode_id => $item->nilai_kriteria ];
+            });
 
-        $semesterTersedia = [];
-
-        foreach ($siswa as $s) {
-            $nama_kelas = preg_replace('/[^0-9]/', '', $s->kelas->nama_kelas);
-            $nama_kelas = (int) $nama_kelas;
-
-            $maks_semester = 12;
-            if (in_array($nama_kelas, [7, 8, 9, 10, 11, 12])) {
-                $maks_semester = 6;
-            }
-
-            $sudahIsi = Penilaian::where('siswa_id', $s->siswa_id)
-                ->orderBy('semester_id', 'asc')
-                ->pluck('semester_id')
-                ->toArray();
-
-            if (empty($sudahIsi)) {
-                $nextSemester = 1;
-            } else {
-                $nextSemester = max($sudahIsi) + 1;
-            }
-
-            $semesterTersedia[$s->siswa_id] = $semuaSemester
-                ->where('semester_id', '>=', $nextSemester)
-                ->where('semester_id', '<=', $maks_semester)
-                ->values();
-        }
-
-        return view('data-penilaian', compact(
-            'data', 'siswa', 'kelas', 'kriteria', 'periode',
-            'semesterTersedia'
-        ));
+        // 9. Kirim ke view
+        return view('data-penilaian', [
+            'data'           => $data,
+            'siswa'          => $siswa,
+            'kelas'          => $kelas,
+            'kriteria'       => $kriteria,
+            'periode'        => $periode,
+            'semuaSemester'  => $semuaSemester,
+            'nilaiPrestasi'  => $nilaiPrestasi,
+            'nilaiPrestasiTersimpan' => $nilaiPrestasiTersimpan,
+            'kriteriaPrestasi' => $kriteriaPrestasi
+        ]);
     }
 
     public function store(Request $request)
@@ -189,5 +202,76 @@ class PenilaianController extends Controller
         $data->delete();
 
         return redirect()->back()->with('success', 'Penilaian berhasil dihapus');
+    }
+
+    public function ajaxEdit($id): JsonResponse
+    {
+        $penilaian = Penilaian::with(['siswa', 'kelas', 'kriteria', 'periode', 'semester'])
+            ->findOrFail($id);
+
+        $sekolah_id = Auth::guard('user_guru')->user()->sekolah_id;
+
+        $siswa   = Siswa::whereHas('kelas', fn ($q) => $q->where('sekolah_id', $sekolah_id))
+                        ->select('siswa_id', 'nama_siswa')
+                        ->get();
+
+        $kelas   = Kelas::where('sekolah_id', $sekolah_id)
+                        ->select('kelas_id', 'nama_kelas')
+                        ->get();
+
+        $kriteria = Kriteria::where('sekolah_id', $sekolah_id)
+                            ->select('kriteria_id', 'nama_kriteria')
+                            ->get();
+
+        $periode  = Periode::select('periode_id', 'tahun_ajaran')->get();
+        $semuaSemester = Semester::select('semester_id', 'nama')->orderBy('semester_id')->get();
+
+        $form = view('partials.edit-penilaian',
+            compact('penilaian', 'siswa', 'kelas', 'kriteria', 'periode', 'semuaSemester')
+        )->render();
+
+        return response()->json(['form' => $form]);
+    }
+
+    public function ajaxHapus($id): JsonResponse
+    {
+        $penilaian = Penilaian::find($id);
+
+        if (!$penilaian) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Data tidak ditemukan.'
+            ], 404);
+        }
+
+        $penilaian->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Penilaian berhasil dihapus.'
+        ]);
+    }
+
+    public function prestasi(Request $request)
+    {
+        $request->validate([
+            'siswa_id'        => 'required|exists:siswa,siswa_id',
+            'kriteria_id'     => 'required|exists:kriteria,kriteria_id',
+            'periode_id'      => 'required|exists:periode,periode_id',
+            'nilai_kriteria'  => 'required|numeric|min:0',
+        ]);
+
+        $data = NilaiPrestasi::updateOrCreate(
+            [
+                'siswa_id'    => $request->siswa_id,
+                'kriteria_id' => $request->kriteria_id,
+                'periode_id'  => $request->periode_id
+            ],
+            [
+                'nilai_kriteria' => $request->nilai_kriteria
+            ]
+        );
+
+        return redirect()->back()->with('success', 'Nilai prestasi berhasil disimpan.');
     }
 }

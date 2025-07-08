@@ -51,6 +51,12 @@
                             <p>Admin Sekolah</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ url('laporan-yayasan') }}" class="nav-link {{ request()->is('laporan-yayasan') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-file"></i>
+                            <p>Laporan</p>
+                        </a>
+                    </li>
                 @endif
 
                 {{-- ADMIN SEKOLAH --}}
@@ -89,6 +95,12 @@
                         <a href="{{ url('periode') }}" class="nav-link {{ request()->is('periode') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-calendar-week"></i>
                             <p>Periode</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url('laporan-sekolah') }}" class="nav-link {{ request()->is('laporan-sekolah') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-file"></i>
+                            <p>Laporan</p>
                         </a>
                     </li>
                 @endif

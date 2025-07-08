@@ -1,0 +1,107 @@
+@extends('layouts.main')
+
+@section('customCss')
+<!-- DataTables -->
+<link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+<!-- Tabler Icons -->
+<link rel="stylesheet" href="{{ asset('assets/plugins/tabler-icons/tabler.min.css') }}">
+@endsection
+
+
+
+@section('customJs')
+<!-- DataTables & Plugins -->
+<script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/jszip/jszip.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/pdfmake/pdfmake.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/pdfmake/vfs_fonts.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+@endsection
+
+@section('content')
+<div class="card card-outline card-primary">
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <h3 class="card-title">Laporan</h3>
+            <a href="{{ url('/laporan-yayasan/cetak') }}" target="_blank" class="btn btn-primary">
+                <i class="fa fa-print mr-1"></i> Cetak Semua
+            </a>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <table id="basicTable" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Siswa</th>
+                    <th>Kelas</th>
+                    <th>Periode</th>
+                    <th>Net Flow</th>
+                    <th>Ranking</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($data as $index => $item)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $item->siswa->nama_siswa ?? '-' }}</td>
+                    <td>{{ $item->kelas->nama_kelas ?? '-' }}</td>
+                    <td>{{ $item->periode->tahun_ajaran ?? '-' }}</td>
+                    <td>{{ $item->net_flow }}</td>
+                    <td>{{ $item->ranking }}</td>
+                </tr>
+
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@endsection
+
+@section('bodyJs')
+<script>
+  $(function () {
+    $("#basicTable").DataTable({
+        "responsive": true,
+        "lengthChange": true,
+        "autoWidth": false,
+        "lengthMenu": [ [5, 10, 25, 50, 100], [5, 10, 25, 50, 100] ]
+    });
+  });
+</script>
+@endsection
+@section('customCss')
+<style>
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+
+        .card, .card * {
+            visibility: visible;
+        }
+
+        .card {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+        }
+
+        .btn, .dataTables_filter, .dataTables_length, .dataTables_info, .dataTables_paginate {
+            display: none !important;
+        }
+    }
+</style>
+@endsection

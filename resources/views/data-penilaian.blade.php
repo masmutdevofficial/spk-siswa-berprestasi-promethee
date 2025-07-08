@@ -32,9 +32,14 @@
     <div class="card-header">
         <div class="d-flex justify-content-between align-items-center">
             <h3 class="card-title">Data Penilaian</h3>
-            <button class="btn btn-primary" data-toggle="modal" data-target="#modalTambah">
-                <i class="fa fa-plus mr-2"></i>Tambah Penilaian
-            </button>
+            <div>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#modalTambah">
+                    <i class="fa fa-plus mr-2"></i>Tambah Penilaian
+                </button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#modalTambahPrestasi">
+                    <i class="fa fa-star mr-2"></i>Tambah Nilai Prestasi
+                </button>
+            </div>
         </div>
     </div>
 
@@ -62,117 +67,134 @@
                     <td>{{ $item->periode->tahun_ajaran ?? '-' }}</td>
                     <td>{{ $item->semester->nama ?? '-' }}</td>
                     <td>{{ $item->nilai_kriteria }}</td>
-                    <td>
-                        <div class="d-flex justify-content-center">
-                            <button class="btn btn-sm btn-warning mr-2" data-toggle="modal" data-target="#modalEdit{{ $item->penilaian_id }}">
-                                <i class="fa fa-edit mr-1"></i>Edit
-                            </button>
-                            <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modalHapus{{ $item->penilaian_id }}">
-                                <i class="fa fa-trash mr-1"></i>Hapus
-                            </button>
-                        </div>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-warning mr-2 btn-edit"
+                                data-id="{{ $item->penilaian_id }}">
+                            <i class="fa fa-edit mr-1"></i>Edit
+                        </button>
+
+                        <button class="btn btn-sm btn-danger btn-hapus"
+                                data-id="{{ $item->penilaian_id }}"
+                                data-nama="{{ $item->siswa->nama_siswa }}">
+                            <i class="fa fa-trash mr-1"></i>Hapus
+                        </button>
                     </td>
                 </tr>
-
-                <!-- Modal Edit -->
-                <div class="modal fade" id="modalEdit{{ $item->penilaian_id }}" tabindex="-1">
-                    <div class="modal-dialog">
-                        <form action="{{ url('penilaian/update/' . $item->penilaian_id) }}" method="POST">
-                            @csrf
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Edit Penilaian</h5>
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="mb-3">
-                                        <label>Siswa</label>
-                                        <select name="siswa_id" class="form-control" required>
-                                            @foreach($siswa as $s)
-                                            <option value="{{ $s->siswa_id }}" {{ $item->siswa_id == $s->siswa_id ? 'selected' : '' }}>
-                                                {{ $s->nama_siswa }}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label>Kelas</label>
-                                        <select name="kelas_id" class="form-control" required>
-                                            @foreach($kelas as $k)
-                                            <option value="{{ $k->kelas_id }}" {{ $item->kelas_id == $k->kelas_id ? 'selected' : '' }}>
-                                                {{ $k->nama_kelas }}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label>Kriteria</label>
-                                        <select name="kriteria_id" class="form-control" required>
-                                            @foreach($kriteria as $kr)
-                                            <option value="{{ $kr->kriteria_id }}" {{ $item->kriteria_id == $kr->kriteria_id ? 'selected' : '' }}>
-                                                {{ $kr->nama_kriteria }}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label>Periode</label>
-                                        <select name="periode_id" class="form-control" required>
-                                            @foreach($periode as $p)
-                                            <option value="{{ $p->periode_id }}" {{ $item->periode_id == $p->periode_id ? 'selected' : '' }}>
-                                                {{ $p->tahun_ajaran }}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label>Semester</label>
-                                        <select name="semester_id" class="form-control" required>
-                                            @foreach($semesterTersedia[$s->siswa_id] ?? [] as $sm)
-                                            <option value="{{ $sm->semester_id }}" {{ $item->semester_id == $sm->semester_id ? 'selected' : '' }}>
-                                                {{ $sm->nama }}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label>Nilai</label>
-                                        <input type="number" step="0.01" name="nilai_kriteria" value="{{ $item->nilai_kriteria }}" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-warning">Update</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Modal Hapus -->
-                <div class="modal fade" id="modalHapus{{ $item->penilaian_id }}" tabindex="-1">
-                    <div class="modal-dialog">
-                        <form action="{{ url('penilaian/delete/' . $item->penilaian_id) }}" method="GET">
-                            @csrf
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Konfirmasi Hapus</h5>
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </div>
-                                <div class="modal-body">
-                                    Yakin ingin menghapus penilaian untuk <strong>{{ $item->siswa->nama_siswa ?? '-' }}</strong>?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-danger">Hapus</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
                 @endforeach
             </tbody>
         </table>
+    </div>
+</div>
+
+<!-- Modal Tambah Nilai Prestasi -->
+<div class="modal fade" id="modalTambahPrestasi" tabindex="-1">
+    <div class="modal-dialog">
+        <form action="{{ url('/nilai-prestasi/store') }}" method="POST">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Nilai Prestasi</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="siswa_id">Siswa</label>
+                        <select name="siswa_id" id="siswa_id" class="form-control" required>
+                            <option value="" disabled selected>Pilih Siswa</option>
+                            @foreach($siswa as $s)
+                                <option value="{{ $s->siswa_id }}" {{ old('siswa_id') == $s->siswa_id ? 'selected' : '' }}>
+                                    {{ $s->nama_siswa }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="kriteria_id">Kriteria</label>
+                        <select name="kriteria_id" id="kriteria_id" class="form-control" required>
+                            <option value="" disabled selected>Pilih Kriteria</option>
+                            @foreach($kriteriaPrestasi as $kr)
+                                <option value="{{ $kr->kriteria_id }}" {{ old('kriteria_id') == $kr->kriteria_id ? 'selected' : '' }}>
+                                    {{ $kr->nama_kriteria }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="periode_id">Periode</label>
+                        <select name="periode_id" id="periode_id" class="form-control" required>
+                            <option value="" disabled selected>Pilih Periode</option>
+                            @foreach($periode as $p)
+                                <option value="{{ $p->periode_id }}" {{ old('periode_id') == $p->periode_id ? 'selected' : '' }}>
+                                    {{ $p->tahun_ajaran }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nilai_kriteria">Nilai</label>
+                        <input type="number" step="0.01" name="nilai_kriteria" id="nilai_kriteria"
+                               class="form-control" value="{{ old('nilai_kriteria') }}" required>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Simpan</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{{-- ───────────────────────── Modal Edit Global ───────────────────────── --}}
+<div class="modal fade" id="modalEditGlobal" tabindex="-1">
+    <div class="modal-dialog">
+        <form id="formEditPenilaian" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Penilaian</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" id="editModalContent">
+                    <p class="text-center m-0">Memuat&nbsp;<i class="fa fa-spinner fa-spin"></i></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-warning">Update</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Hapus Global -->
+<div class="modal fade" id="modalHapusGlobal" tabindex="-1">
+    <div class="modal-dialog">
+        <form id="formHapusPenilaian" method="POST">
+            @csrf
+            @method('DELETE')
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Konfirmasi Hapus</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    Yakin ingin menghapus penilaian untuk
+                    <strong id="hapusNamaSiswa">siswa ini</strong>?
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Hapus</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -222,7 +244,7 @@
                     <div class="mb-3">
                         <label>Semester</label>
                         <select name="semester_id" class="form-control" required>
-                            @foreach($semesterTersedia[$s->siswa_id] ?? [] as $sm)
+                            @foreach($semuaSemester as $sm)
                             <option value="{{ $sm->semester_id }}">{{ $sm->nama }}</option>
                             @endforeach
                         </select>
@@ -244,13 +266,56 @@
 
 @section('bodyJs')
 <script>
-  $(function () {
+$(function () {
+    // DataTables
     $("#basicTable").DataTable({
-        "responsive": true,
-        "lengthChange": true,
-        "autoWidth": false,
-        "lengthMenu": [ [5, 10, 25, 50, 100], [5, 10, 25, 50, 100] ]
+        responsive: true,
+        lengthChange: true,
+        autoWidth: false,
+        lengthMenu: [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]]
     });
-  });
+
+    // ───────────────────────── tombol EDIT ─────────────────────────
+    $('.btn-edit').on('click', function () {
+        const id = $(this).data('id');
+        $('#editModalContent').html('<p class="text-center m-0">Memuat&nbsp;<i class="fa fa-spinner fa-spin"></i></p>');
+        $('#modalEditGlobal').modal('show');
+
+        $.get(`/penilaian/edit/${id}`, function (res) {
+            $('#editModalContent').html(res.form);
+            $('#formEditPenilaian').attr('action', `/penilaian/update/${id}`);
+        });
+    });
+
+    // ───────────────────────── tombol HAPUS ─────────────────────────
+    $('.btn-hapus').on('click', function () {
+        const id   = $(this).data('id');
+        const nama = $(this).data('nama');
+
+        // isi data di modal
+        $('#hapusNamaSiswa').text(nama);
+        $('#formHapusPenilaian').attr('action', '/penilaian/delete/' + id);
+
+        $('#modalHapusGlobal').modal('show');
+    });
+});
+</script>
+<script>
+    const nilaiPrestasiTersimpan = @json($nilaiPrestasiTersimpan);
+
+    function updateNilaiPrestasiAuto() {
+        const siswaId    = $('#siswa_id').val();
+        const kriteriaId = $('#kriteria_id').val();
+        const periodeId  = $('#periode_id').val();
+
+        const key = `${siswaId}-${kriteriaId}-${periodeId}`;
+        if (nilaiPrestasiTersimpan[key] !== undefined) {
+            $('#nilai_kriteria').val(nilaiPrestasiTersimpan[key]);
+        } else {
+            $('#nilai_kriteria').val('');
+        }
+    }
+
+    $('#siswa_id, #kriteria_id, #periode_id').on('change', updateNilaiPrestasiAuto);
 </script>
 @endsection

@@ -17,7 +17,7 @@
 </head>
 <body>
 
-    <h2>PROMETHEE – Detail Perhitungan (Kelas 6A)</h2>
+    <h2>PROMETHEE – Detail Perhitungan ({{ $kelasLabel }})</h2>
 
     {{-- 0. Rumus --}}
     @verbatim

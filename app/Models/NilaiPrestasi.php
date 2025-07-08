@@ -11,16 +11,11 @@ class NilaiPrestasi extends Model
 
     protected $table = 'nilai_prestasi';
     protected $primaryKey = 'nilai_prestasi_id';
-    protected $fillable = ['siswa_id', 'kelas_id', 'kriteria_id', 'periode_id', 'nilai_kriteria'];
+    protected $fillable = ['siswa_id', 'kriteria_id', 'periode_id', 'nilai_kriteria'];
 
     public function siswa()
     {
         return $this->belongsTo(Siswa::class, 'siswa_id', 'siswa_id');
-    }
-
-    public function kelas()
-    {
-        return $this->belongsTo(Kelas::class, 'kelas_id', 'kelas_id');
     }
 
     public function kriteria()

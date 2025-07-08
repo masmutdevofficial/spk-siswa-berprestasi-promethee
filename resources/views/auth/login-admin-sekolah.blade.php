@@ -70,6 +70,10 @@
                 Email: <code>adminsekolah2@gmail.com</code><br>
                 Password: <code>adminsekolah2</code>
             </li>
+            <li><strong>Admin Sekolah 3</strong><br>
+                Email: <code>adminsekolah3@gmail.com</code><br>
+                Password: <code>adminsekolah3</code>
+            </li>
         </ul>
     </div>
   </div>

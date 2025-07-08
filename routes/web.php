@@ -1,25 +1,29 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdminYayasanController;
-use App\Http\Controllers\YayasanController;
-use App\Http\Controllers\AdminSekolahController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\SekolahController;
-use App\Http\Controllers\UserGuruController;
-use App\Http\Controllers\KelasController;
-use App\Http\Controllers\SiswaController;
-use App\Http\Controllers\KriteriaController;
-use App\Http\Controllers\BobotKriteriaController;
-use App\Http\Controllers\PeriodeController;
-use App\Http\Controllers\SemesterController;
-use App\Http\Controllers\PenilaianController;
-use App\Http\Controllers\RekomendasiController;
-use App\Models\Kriteria;
 use App\Models\Siswa;
+use App\Models\Kriteria;
 use App\Models\Penilaian;
+use App\Models\Rekomendasi;
 use App\Models\NilaiPrestasi;
 use App\Services\PrometheeService;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KelasController;
+use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\PeriodeController;
+use App\Http\Controllers\SekolahController;
+use App\Http\Controllers\YayasanController;
+use App\Http\Controllers\KriteriaController;
+use App\Http\Controllers\SemesterController;
+use App\Http\Controllers\UserGuruController;
+use App\Http\Controllers\PenilaianController;
+use App\Http\Controllers\PrometheeController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\RekomendasiController;
+use App\Http\Controllers\AdminSekolahController;
+use App\Http\Controllers\AdminYayasanController;
+use App\Http\Controllers\BobotKriteriaController;
 
 // Login selector
 Route::get('/', [LoginController::class, 'showLoginSelector'])->name('login')->middleware('sudahLogin');
@@ -59,6 +63,10 @@ Route::middleware('cekLogin:admin_yayasan')->group(function () {
     Route::post('/admin-sekolah/store', [AdminSekolahController::class, 'store']);
     Route::post('/admin-sekolah/update/{id}', [AdminSekolahController::class, 'update']);
     Route::get('/admin-sekolah/delete/{id}', [AdminSekolahController::class, 'destroy']);
+
+    Route::get('/laporan-yayasan', [LaporanController::class, 'laporanAdminYayasan']);
+    Route::get('/laporan-yayasan/cetak', [LaporanController::class, 'cetakAdminYayasan']);
+
 });
 
 // ADMIN SEKOLAH
@@ -92,6 +100,9 @@ Route::middleware('cekLogin:admin_sekolah')->group(function () {
     Route::post('/semester/store', [SemesterController::class, 'store']);
     Route::post('/semester/update/{id}', [SemesterController::class, 'update']);
     Route::get('/semester/delete/{id}', [SemesterController::class, 'destroy']);
+
+    Route::get('/laporan-sekolah', [LaporanController::class, 'laporanAdminSekolah']);
+    Route::get('/laporan-sekolah/cetak', [LaporanController::class, 'cetakAdminSekolah']);
 });
 
 // GURU
@@ -103,18 +114,15 @@ Route::middleware('cekLogin:user_guru')->group(function () {
 
     Route::get('/penilaian', [PenilaianController::class, 'index']);
     Route::post('/penilaian/store', [PenilaianController::class, 'store']);
-    Route::post('/penilaian/update/{id}', [PenilaianController::class, 'update']);
-    Route::get('/penilaian/delete/{id}', [PenilaianController::class, 'destroy']);
+    Route::get('/penilaian/edit/{id}', [PenilaianController::class, 'ajaxEdit']);
+    Route::get('/penilaian/hapus/{id}', [PenilaianController::class, 'ajaxHapus']);
+    Route::put('/penilaian/update/{id}', [PenilaianController::class, 'update']);
+    Route::delete('/penilaian/delete/{id}', [PenilaianController::class, 'destroy']);
+    Route::post('/nilai-prestasi/store', [PenilaianController::class, 'prestasi']);
 
     Route::get('/ranking', [RekomendasiController::class, 'index']);
     Route::post('/ranking/store', [RekomendasiController::class, 'store']);
     Route::post('/ranking/update/{id}', [RekomendasiController::class, 'update']);
     Route::get('/ranking/delete/{id}', [RekomendasiController::class, 'destroy']);
-
-});
-
-Route::get('/promethee/{kelasId}', function ($kelasId) {
-    $periodeId = 1;
-    $detail = (new PrometheeService)->hitungDetailed($kelasId, $periodeId);
-    return view('algoritma', compact('kelasId', 'detail'));
+    Route::get('/promethee/{kelasId}', [PrometheeController::class, 'run']);
 });
