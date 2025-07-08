@@ -32,9 +32,19 @@
     <div class="card-header">
         <div class="d-flex justify-content-between align-items-center">
             <h3 class="card-title">Laporan</h3>
-            <a href="{{ url('/laporan-yayasan/cetak') }}" target="_blank" class="btn btn-primary">
-                <i class="fa fa-print mr-1"></i> Cetak Semua
-            </a>
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-print mr-1"></i> Cetak Per Sekolah
+                </button>
+                <div class="dropdown-menu">
+                    @foreach ($sekolahList as $sekolah)
+                        <a class="dropdown-item" target="_blank"
+                            href="{{ url('/laporan-yayasan/cetak-sekolah/' . $sekolah->sekolah_id) }}">
+                            {{ $sekolah->nama_sekolah }}
+                        </a>
+                    @endforeach
+                </div>
+            </div>
         </div>
     </div>
 
@@ -64,6 +74,12 @@
                 @endforeach
             </tbody>
         </table>
+    </div>
+
+    <div class="alert alert-success mx-3">
+        Siswa Terbaik:
+        <strong>{{ $tertinggi?->siswa->nama_siswa ?? '-' }}</strong>
+        (Net Flow: {{ $tertinggi?->net_flow ?? '-' }})
     </div>
 </div>
 

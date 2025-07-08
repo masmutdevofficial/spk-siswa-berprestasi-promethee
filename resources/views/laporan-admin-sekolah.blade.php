@@ -65,6 +65,12 @@
             </tbody>
         </table>
     </div>
+
+    <div class="alert alert-success mx-3">
+        Siswa Terbaik:
+        <strong>{{ $tertinggi?->siswa->nama_siswa ?? '-' }}</strong>
+        (Net Flow: {{ $tertinggi?->net_flow ?? '-' }})
+    </div>
 </div>
 
 @endsection

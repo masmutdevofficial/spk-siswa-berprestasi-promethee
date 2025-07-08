@@ -66,7 +66,7 @@ Route::middleware('cekLogin:admin_yayasan')->group(function () {
 
     Route::get('/laporan-yayasan', [LaporanController::class, 'laporanAdminYayasan']);
     Route::get('/laporan-yayasan/cetak', [LaporanController::class, 'cetakAdminYayasan']);
-
+    Route::get('/laporan-yayasan/cetak-sekolah/{sekolahId}', [LaporanController::class, 'cetakPerSekolah']);
 });
 
 // ADMIN SEKOLAH

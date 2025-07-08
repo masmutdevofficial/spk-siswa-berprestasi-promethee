@@ -63,7 +63,16 @@
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $item->siswa->nama_siswa ?? '-' }}</td>
                     <td>{{ $item->kelas->nama_kelas ?? '-' }}</td>
-                    <td>{{ $item->kriteria->nama_kriteria ?? '-' }}</td>
+                <td>
+                    @php
+                        $nama = $item->kriteria->nama_kriteria ?? '-';
+                        // Hilangkan semua angka dan teks "Semester"
+                        $nama = preg_replace('/\s*Semester\s*\d+/i', '', $nama); // hapus "Semester x"
+                        $nama = preg_replace('/\d+/', '', $nama); // hapus angka tersisa
+                        $nama = trim($nama);
+                    @endphp
+                    {{ $nama }}
+                </td>
                     <td>{{ $item->periode->tahun_ajaran ?? '-' }}</td>
                     <td>{{ $item->semester->nama ?? '-' }}</td>
                     <td>{{ $item->nilai_kriteria }}</td>

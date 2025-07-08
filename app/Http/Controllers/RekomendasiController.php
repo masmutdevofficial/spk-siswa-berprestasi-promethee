@@ -26,8 +26,9 @@ class RekomendasiController extends Controller
 
         $kelas = Kelas::where('sekolah_id', $sekolah_id)->get();
         $periode = Periode::all();
+        $tertinggi = $data->sortByDesc('net_flow')->first();
 
-        return view('data-ranking', compact('data', 'siswa', 'kelas', 'periode'));
+        return view('data-ranking', compact('data', 'siswa', 'kelas', 'periode', 'tertinggi'));
     }
 
     public function store(Request $request)
