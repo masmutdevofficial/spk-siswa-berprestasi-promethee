@@ -60,59 +60,61 @@ Menentukan **ranking siswa** berdasarkan perhitungan **Net Flow tertinggi** meng
 
     ```bash
     git clone https://github.com/masmutdevofficial/spk-siswa-berprestasi-promethee
-    cd spk-promethee
+    cd spk-siswa-berprestasi-promethee
     ```
 
-2. **Copy file `.env`:**
+2. **Copy file `.env.example` dan ubah menjadi `.env`**
 
     ```bash
     cp .env.example .env
     ```
 
-3. **Generate application key:**
+3. **Atur konfigurasi database di file .env**
+
+4. **Generate application key:**
 
     ```bash
     php artisan key:generate
     ```
 
-4. **Link storage (wajib):**
+5. **Link storage (wajib):**
 
     ```bash
     php artisan storage:link
     ```
 
-5. **Buat folder dengan nama seeders `storage/app/seeders`:**
+6. **Buat folder dengan nama seeders `storage/app/seeders`:**
 
     ```bash
     mkdir -p storage/app/seeders
     ```
 
-6. **Salin file berikut ke folder `storage/app/seeders`:**
+7. **Salin file berikut ke folder `storage/app/seeders`:**
 
     - `penilaian-sd.xlsx`
     - `penilaian-smp.xlsx`
     - `penilaian-sma.xlsx`
 
-7. **Jalankan migrasi dan seeder awal:**
+8. **Jalankan migrasi dan seeder awal:**
 
     ```bash
     php artisan migrate
     php artisan db:seed
     ```
 
-8. **Untuk memasukkan data penilaian lengkap dari file Excel:**
+9. **Untuk memasukkan data penilaian lengkap dari file Excel:**
 
     ```bash
     php artisan db:seed --class=DataPenilaianSeeder
     ```
 
-9. **Jalankan server lokal:**
+10. **Jalankan server lokal:**
 
     ```bash
     php artisan serve
     ```
 
-10. **Akses melalui browser:**
+11. **Akses melalui browser:**
 
     ```
     http://127.0.0.1:8000
@@ -122,11 +124,17 @@ Menentukan **ranking siswa** berdasarkan perhitungan **Net Flow tertinggi** meng
 
 ## 👥 Akun Login Default
 
-| Role          | Username | Password |
-| ------------- | -------- | -------- |
-| Admin Sekolah | admin    | admin    |
-| Guru          | guru     | guru     |
-| Yayasan       | yayasan  | yayasan  |
+| Role            | Email                   | Password      |
+| --------------- | ----------------------- | ------------- |
+| Admin Sekolah 1 | adminsekolah1@gmail.com | adminsekolah1 |
+| Admin Sekolah 2 | adminsekolah2@gmail.com | adminsekolah2 |
+| Admin Sekolah 3 | adminsekolah3@gmail.com | adminsekolah3 |
+| Guru 1          | guru1@gmail.com         | guru1         |
+| Guru 2          | guru2@gmail.com         | guru2         |
+| Guru 3          | guru3@gmail.com         | guru3         |
+| Admin Yayasan 1 | adminyayasan1@gmail.com | adminyayasan1 |
+| Admin Yayasan 2 | adminyayasan2@gmail.com | adminyayasan2 |
+| Admin Yayasan 3 | adminyayasan3@gmail.com | adminyayasan3 |
 
 ---
 
@@ -135,7 +143,6 @@ Menentukan **ranking siswa** berdasarkan perhitungan **Net Flow tertinggi** meng
 -   Perhitungan lengkap PROMETHEE
 -   Net Flow positif dan negatif
 -   Ranking akhir siswa
--   Grafik hasil rekomendasi
 -   Laporan cetak per sekolah dan yayasan
 
 ---
