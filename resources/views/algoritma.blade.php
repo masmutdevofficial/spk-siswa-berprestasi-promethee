@@ -98,8 +98,28 @@
         </tbody>
     </table>
 
-    {{-- 3. Matriks Preferensi π(a,b) --}}
-    <h3>3. Matriks Preferensi π(a,b)</h3>
+
+    <h3 class="text-lg font-bold mb-2">3. Detail Perhitungan Preferensi (π)</h3>
+    <table class="table-auto w-full border text-sm">
+        <thead>
+            <tr>
+                <th class="border px-2 py-1">Pasangan (a,b)</th>
+                <th class="border px-2 py-1">Perhitungan</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($detail['perhitunganDetail'] as $pair => $rumus)
+                <tr>
+                    <td class="border px-2 py-1 font-medium">{{ $pair }}</td>
+                    <td class="border px-2 py-1 font-mono text-xs">{{ $rumus }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+
+    {{-- 4. Matriks Preferensi π(a,b) --}}
+    <h3>4. Matriks Preferensi π(a,b)</h3>
     <table>
         <thead>
             <tr>
@@ -121,8 +141,8 @@
         </tbody>
     </table>
 
-    {{-- 4. Leaving / Entering / Net --}}
-    <h3>4. Leaving, Entering, Net Flow</h3>
+    {{-- 5. Leaving / Entering / Net --}}
+    <h3>5. Leaving, Entering, Net Flow</h3>
     <table>
         <thead>
             <tr>
@@ -147,8 +167,8 @@
         </tbody>
     </table>
 
-    {{-- 5. Ranking --}}
-    <h3>5. Ranking Akhir (PROMETHEE II)</h3>
+    {{-- 6. Ranking --}}
+    <h3>6. Ranking Akhir (PROMETHEE II)</h3>
     <table>
         <thead>
             <tr><th>Rank</th><th>Siswa</th><th>Net Flow</th></tr>
